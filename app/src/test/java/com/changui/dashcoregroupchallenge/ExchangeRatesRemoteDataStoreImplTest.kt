@@ -32,6 +32,7 @@ internal class ExchangeRatesRemoteDataStoreImplTest {
         exchangeRatesRemoteDataStoreImpl = ExchangeRatesRemoteDataStoreImpl(apiService, failureFactory)
     }
 
+
     /*
     @Test
     fun `fetching exchange rates from server returns the right side of the disjoint union containing the api response`() {
@@ -44,9 +45,10 @@ internal class ExchangeRatesRemoteDataStoreImplTest {
 
         val actualSuccessResponse = runBlocking { exchangeRatesRemoteDataStoreImpl.fetchExchangeRates(cryptoCurrency) }
         coVerify { apiService.getCryptoCurrencyExchangeRate("BTC") }
-        actualSuccessResponse.shouldBeInstanceOf<ResultState.Success<ExchangeRatesApiResponse>>()
+        actualSuccessResponse shouldBeInstanceOf ResultState.Success(ExchangeRatesApiResponse::class)::class
     }
     */
+
 
     @org.junit.Test(expected = Exception::class)
     fun `fetching exchange rates from server fails with an exception and returns the left side of the disjoint union`() {
