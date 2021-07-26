@@ -1,6 +1,7 @@
 package com.changui.dashcoregroupchallenge.presentation
 
 import com.changui.dashcoregroupchallenge.domain.entity.CryptoCurrency
+import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import javax.inject.Inject
 
 class CryptoCurrenciesGenerator @Inject constructor (private val resourcesHelper: ResourcesHelper) {

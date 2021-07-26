@@ -1,6 +1,6 @@
-package com.changui.dashcoregroupchallenge.data
+package com.changui.dashcoregroupchallenge.data.remote
 
-import com.changui.dashcoregroupchallenge.data.error.Failure
+import com.changui.dashcoregroupchallenge.domain.error.Failure
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException

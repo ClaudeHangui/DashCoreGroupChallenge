@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changui.dashcoregroupchallenge.data.error.Failure
-import com.changui.dashcoregroupchallenge.domain.ExchangeRateResult
+import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
+import com.changui.dashcoregroupchallenge.domain.ResultState
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchers
+import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dispatchers: CoroutineDispatchers,
     private val resourcesHelper: ResourcesHelper,
     private val useCase: GetExchangeRatesUseCase
 ) : ViewModel() {
@@ -47,12 +47,12 @@ class MainViewModel @Inject constructor(
         currentCryptoCurrencyName = cryptoCurrencyName
         loadingMutableLiveData.value = true
         val params = GetExchangeRatesUseCase.GetExchangeRatesParams(cryptoCurrencyCode, cryptoCurrencyName)
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(Dispatchers.Main) {
             when(
-                val result = withContext(dispatchers.io) { useCase.invoke(params) }
+                val result = withContext(Dispatchers.IO) { useCase.execute(params) }
             ) {
-                is ExchangeRateResult.ExchangeRateFailure -> {
-                    val failureDescription = when (result.failureWithCache.failure) {
+                is ResultState.Error -> {
+                    val failureDescription = when (result.failure) {
                         is Failure.NetworkError -> resourcesHelper.networkErrorMessage
                         is Failure.ServerError -> resourcesHelper.serverErrorMessage
                         is Failure.BadRequestError -> resourcesHelper.badRequestErrorMessage
@@ -60,16 +60,17 @@ class MainViewModel @Inject constructor(
                         else -> resourcesHelper.unknownErrorMessage
                     }
 
-                    if (result.failureWithCache.data.isEmpty()) {
+                    if (result.data.isNullOrEmpty()) {
                         errorMutableLiveData.value = FailureUIState.FailureUIStateWithoutCache(failureDescription)
                     } else {
-                        errorMutableLiveData.value = FailureUIState.FailureUIStateWithCache(failureDescription, result.failureWithCache.data)
+                        errorMutableLiveData.value = FailureUIState.FailureUIStateWithCache(failureDescription, result.data)
                     }
 
                     loadingMutableLiveData.value = false
                 }
-                is ExchangeRateResult.ExchangeRateSuccess -> {
-                    exchangeRatesMutableLiveData.value = result.items
+                is ResultState.Success -> {
+                    val dataResult = result.data
+                    exchangeRatesMutableLiveData.value = dataResult
                     loadingMutableLiveData.value = false
                 }
             }

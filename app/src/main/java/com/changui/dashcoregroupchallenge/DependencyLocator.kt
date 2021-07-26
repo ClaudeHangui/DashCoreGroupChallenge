@@ -11,13 +11,11 @@ import com.changui.dashcoregroupchallenge.data.remote.BitPayApiService
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStore
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStoreImpl
 import com.changui.dashcoregroupchallenge.domain.ExchangeRateRepository
-import com.changui.dashcoregroupchallenge.domain.ExchangeRatesFailureFactory
+import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesFailureFactory
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCaseImpl
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchers
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchersImpl
 import com.changui.dashcoregroupchallenge.presentation.CryptoCurrenciesGenerator
-import com.changui.dashcoregroupchallenge.presentation.ResourcesHelper
+import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -103,9 +101,6 @@ object NonStaticProvision {
 
     @Provides
     fun provideErrorFactory(): ExchangeRatesFailureFactory = ExchangeRatesFailureFactory()
-
-    @Provides
-    fun provideCoroutineDispatcher(): CoroutineDispatchers = CoroutineDispatchersImpl()
 }
 
 @InstallIn(SingletonComponent::class)

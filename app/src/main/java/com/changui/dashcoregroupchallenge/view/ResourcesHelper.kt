@@ -1,4 +1,4 @@
-package com.changui.dashcoregroupchallenge.presentation
+package com.changui.dashcoregroupchallenge.view
 
 import android.content.Context
 import com.changui.dashcoregroupchallenge.R

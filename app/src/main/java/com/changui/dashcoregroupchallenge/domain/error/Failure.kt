@@ -1,4 +1,4 @@
-package com.changui.dashcoregroupchallenge.data.error
+package com.changui.dashcoregroupchallenge.domain.error
 
 sealed class Failure {
     object NetworkError : Failure()

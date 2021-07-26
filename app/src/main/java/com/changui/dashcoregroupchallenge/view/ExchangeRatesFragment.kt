@@ -8,7 +8,6 @@ import com.changui.dashcoregroupchallenge.R
 import com.changui.dashcoregroupchallenge.databinding.ExchangeRatesFragmentBinding
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
 import com.changui.dashcoregroupchallenge.presentation.MainViewModel
-import com.changui.dashcoregroupchallenge.presentation.showSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

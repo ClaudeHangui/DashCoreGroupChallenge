@@ -13,7 +13,6 @@ import com.changui.dashcoregroupchallenge.databinding.CryptoCurrencyFragmentBind
 import com.changui.dashcoregroupchallenge.domain.entity.CryptoCurrency
 import com.changui.dashcoregroupchallenge.presentation.CryptoCurrenciesGenerator
 import com.changui.dashcoregroupchallenge.presentation.MainViewModel
-import com.changui.dashcoregroupchallenge.presentation.concatToString
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

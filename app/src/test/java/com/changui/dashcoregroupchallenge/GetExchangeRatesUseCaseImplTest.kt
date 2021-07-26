@@ -1,12 +1,10 @@
 package com.changui.dashcoregroupchallenge
 
-import arrow.core.Either
-import com.changui.dashcoregroupchallenge.data.error.Failure
-import com.changui.dashcoregroupchallenge.data.error.FailureWithCache
+import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.domain.ExchangeRateRepository
-import com.changui.dashcoregroupchallenge.domain.ExchangeRateResult
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCaseImpl
+import com.changui.dashcoregroupchallenge.domain.ResultState
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -22,7 +20,7 @@ internal class GetExchangeRatesUseCaseImplTest {
 
     @MockK lateinit var repository: ExchangeRateRepository
     private lateinit var getExchangeRatesUseCaseImpl: GetExchangeRatesUseCaseImpl
-    private val params = GetExchangeRatesUseCase.GetExchangeRatesParams("BTC")
+    private val params = GetExchangeRatesUseCase.GetExchangeRatesParams("BTC", "Bitcoin")
 
     @BeforeEach
     fun setUp() {
@@ -37,16 +35,16 @@ internal class GetExchangeRatesUseCaseImplTest {
             ExchangeRateModel("USD", "US Dollar", 41248.11)
         )
 
-        coEvery { repository.getExchangeRates(params) } returns Either.Right(exchangeRates)
+        coEvery { repository.getExchangeRates(params) } returns ResultState.Success(exchangeRates)
         val exchangeRateResult = runBlocking { getExchangeRatesUseCaseImpl.execute(params) }
-        exchangeRateResult `should be instance of` ExchangeRateResult.ExchangeRateSuccess::class
+        exchangeRateResult `should be instance of` ResultState.Success::class
     }
 
     @Test
     fun `check if use case to fetch exchange rates returns failure due to server error from the left side of the disjoint union`(){
         val remoteFailure = Failure.NetworkError
-        coEvery { repository.getExchangeRates(params) } returns Either.Left(FailureWithCache(remoteFailure, emptyList()))
+        coEvery { repository.getExchangeRates(params) } returns ResultState.Error(remoteFailure, emptyList())
         val exchangeRateResult = runBlocking { getExchangeRatesUseCaseImpl.execute(params) }
-        exchangeRateResult `should be instance of` ExchangeRateResult.ExchangeRateFailure::class
+        exchangeRateResult `should be instance of` ResultState.Error::class
     }
 }
