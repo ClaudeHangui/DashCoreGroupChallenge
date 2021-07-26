@@ -15,7 +15,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         tools:text="Euro"
-        android:textColor="@color/colorAccent2"
+        android:textColor="@color/content_color"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +31,7 @@
         android:paddingRight="16dp"
         tools:text="1.25"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/colorAccent2"
+        android:textColor="@color/content_color"
         android:textSize="15sp"
         app:layout_constraintTop_toTopOf="parent"
         android:minHeight="?android:attr/listPreferredItemHeightSmall" />
@@ -42,7 +42,7 @@
         android:layout_height="0.5dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/name"
-        android:background="@color/colorAccent2"
+        android:background="@color/divider_color"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

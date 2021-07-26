@@ -30,9 +30,9 @@ class ExchangeRatesFragment : Fragment(R.layout.exchange_rates_fragment) {
         binding?.exchangeRatesRv?.setHasFixedSize(true)
         binding?.exchangeRatesRv?.adapter = adapter
 
-        viewModel._loadingLiveData().observe(viewLifecycleOwner, { showLoading: Boolean -> renderLoadingState(showLoading) } )
-        viewModel._exchangeRatesLiveData().observe(viewLifecycleOwner, { items: List<ExchangeRateModel> -> renderListState(items) })
-        viewModel._exchangeRatesErrorLiveData().observe(viewLifecycleOwner, { errorUIModel: MainViewModel.FailureUIState -> renderErrorState(errorUIModel)} )
+        viewModel.loadingLiveData().observe(viewLifecycleOwner, { showLoading: Boolean -> renderLoadingState(showLoading) } )
+        viewModel.exchangeRatesSuccessLiveData().observe(viewLifecycleOwner, { items: List<ExchangeRateModel> -> renderListState(items) })
+        viewModel.exchangeRatesFailureLiveData().observe(viewLifecycleOwner, { errorUIModel: MainViewModel.FailureUIState -> renderErrorState(errorUIModel)} )
     }
 
     private fun renderErrorState(failure: MainViewModel.FailureUIState) {
@@ -56,14 +56,23 @@ class ExchangeRatesFragment : Fragment(R.layout.exchange_rates_fragment) {
         binding?.progress?.visibility = if (showLoading) {
             binding?.errorGroup?.visibility = View.GONE
             binding?.exchangeRatesRv?.visibility = View.GONE
+            binding?.emptyGroup?.visibility = View.GONE
             View.VISIBLE
         }
         else View.GONE
     }
 
     private fun renderListState(items: List<ExchangeRateModel>) {
-        adapter.setData(items as MutableList<ExchangeRateModel>)
-        binding?.exchangeRatesGroup?.visibility = View.VISIBLE
+        if (items.isEmpty()) {
+            binding?.retryBtn?.setOnClickListener {
+                binding?.emptyGroup?.visibility = View.GONE
+                viewModel.getExchangeRatesForCryptoCurrency(currentCryptoCurrency, currentCryptoCurrencyFullName)
+            }
+            binding?.emptyGroup?.visibility = View.VISIBLE
+        } else {
+            adapter.setData(items as MutableList<ExchangeRateModel>)
+            binding?.exchangeRatesGroup?.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

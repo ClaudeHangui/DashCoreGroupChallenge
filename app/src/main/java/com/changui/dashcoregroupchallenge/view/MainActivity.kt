@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = MainActivityBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        this.title = "BitPay Exchange Rates"
+        setSupportActionBar(binding.toolbar)
 
         if (savedInstanceState == null) {
             val fm: FragmentManager = supportFragmentManager

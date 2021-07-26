@@ -27,4 +27,13 @@
     <string name="error_unauthorised_desc">Unable to get the latest exchange rates. You are not authorised to see this content. </string>
     <string name="error_unknown_desc">Unable to get the latest exchange rates, an unexpected error occurred. Exit and retry later </string>
     <string name="change">change</string>
+    <string name="title_activity_main_two">MainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

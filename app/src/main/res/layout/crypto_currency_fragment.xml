@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="@id/left_guideline"
         app:layout_constraintTop_toTopOf="parent"
         android:text="CryptoCurrency"
-        android:textColor="@color/colorAccent2"
+        android:textColor="@color/title_color"
         android:textStyle="bold"
         android:textSize="18sp"
         />
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/change_crypto_btn"
         app:layout_constraintStart_toStartOf="@id/left_guideline"
         android:layout_marginTop="@dimen/dimen_16"
-        android:textColor="@color/colorAccent2"
+        android:textColor="@color/content_color"
         android:textSize="15sp"
         tools:text="Base Currency: Bitcoin(BTC)"
         />

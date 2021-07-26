@@ -12,7 +12,9 @@ internal fun Fragment.showSnackBar(message: String) {
     }
 }
 
-
+/**
+ * function to provide the crypto currencies as described by the requirements
+ */
 internal fun CryptoCurrency.concatToString(): String {
     return this.name + " (" + this.code + ")"
 }

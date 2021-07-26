@@ -5,7 +5,7 @@ import com.changui.dashcoregroupchallenge.R
 import javax.inject.Inject
 
 /*
-* The sole purpose of the class is to return string messages, abstracting the dependence on the system.
+* The sole purpose of the class is to return string/array resources in non-view classes, thereby abstracting the dependence on the system.
  */
 
 class ResourcesHelper @Inject constructor(private val applicationContext: Context) {
@@ -24,10 +24,10 @@ class ResourcesHelper @Inject constructor(private val applicationContext: Contex
     val unknownErrorMessage
         get() = applicationContext.getString(R.string.error_unknown_desc)
 
-    val cryptoCurrencyNames
+    val cryptoCurrencyNames: Array<String>
         get() = applicationContext.resources.getStringArray(R.array.crypto_currency_names)
 
-    val cryptoCurrencyCodes
+    val cryptoCurrencyCodes: Array<String>
         get() = applicationContext.resources.getStringArray(R.array.crypto_currency_codes)
 
 }
