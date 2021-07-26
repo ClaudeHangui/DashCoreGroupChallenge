@@ -1,0 +1,5 @@
+package com.changui.dashcoregroupchallenge.domain
+
+import com.changui.dashcoregroupchallenge.data.RemoteBaseFailureFactoryImpl
+
+class ExchangeRatesFailureFactory: RemoteBaseFailureFactoryImpl()

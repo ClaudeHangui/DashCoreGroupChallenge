@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">DashCoreGroupChallenge</string>
+    <string name="retry">Retry</string>
+
+    <string-array name="crypto_currency_names">
+        <item>Bitcoin</item>
+        <item>Bitcoin Cash</item>
+        <item>Ether</item>
+        <item>Ripple</item>
+        <item>Dogecoin</item>
+    </string-array>
+
+    <string-array name="crypto_currency_codes">
+        <item>BTC</item>
+        <item>BCH</item>
+        <item>ETH</item>
+        <item>XRP</item>
+        <item>DOGE</item>
+    </string-array>
+
+    <string name="error_bad_request_desc">An unexpected error occurred. Exit and retry later. </string>
+    <string name="error_network_desc">Unable to get the latest exchange rates. Please check your internet connection</string>
+    <string name="error_forbidden_desc">We are sorry but, you are not permitted to see this. Please exit and contact the help center</string>
+    <string name="error_gateway_desc">Unable to get the latest exchange rates. Please exit and contact the help center or retry later</string>
+    <string name="error_not_found_desc">Unable to get the latest exchange rates. Please exit and retry later </string>
+    <string name="error_internal_server_desc">Unable to get the latest exchange rates. Please exit and contact the help center or retry later </string>
+    <string name="error_unauthorised_desc">Unable to get the latest exchange rates. You are not authorised to see this content. </string>
+    <string name="error_unknown_desc">Unable to get the latest exchange rates, an unexpected error occurred. Exit and retry later </string>
+    <string name="change">change</string>
+</resources>
