@@ -3,6 +3,7 @@ package com.changui.dashcoregroupchallenge.data
 import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRate
 import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRateLocalDataStore
+import com.changui.dashcoregroupchallenge.data.mapper.RemoteToLocalMapper
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesApiResponse
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStore
 import com.changui.dashcoregroupchallenge.domain.ExchangeRateRepository
@@ -20,6 +21,7 @@ import javax.inject.Inject
  */
 
 class ExchangeRateRepositoryImpl @Inject constructor(private val remoteDataStore: ExchangeRatesRemoteDataStore,
+                                                     private val mapper: RemoteToLocalMapper,
                                                      private val localDataStore: CryptoCurrencyExchangeRateLocalDataStore)
     : ExchangeRateRepository {
     override suspend fun getExchangeRates(params: GetExchangeRatesUseCase.GetExchangeRatesParams): ResultState<List<ExchangeRateModel>> {
@@ -30,7 +32,8 @@ class ExchangeRateRepositoryImpl @Inject constructor(private val remoteDataStore
                     ResultState.Success(cacheExchangeRate.toUIModel())
                 } else {
                     localDataStore.clearCacheForCryptoCurrency(params.cryptoCurrencyCode)
-                    localDataStore.saveExchangeRatesForCryptoCurrency(remoteResult.data.toLocalModel(params))
+                    val mapResult = mapper.map(remoteResult.data, params)
+                    localDataStore.saveExchangeRatesForCryptoCurrency(mapResult)
                     val cacheExchangeRate = localDataStore.getAllExchangeRatesForCryptoCurrency(params.cryptoCurrencyCode)
                     ResultState.Success(cacheExchangeRate.toUIModel())
                 }
@@ -49,13 +52,5 @@ class ExchangeRateRepositoryImpl @Inject constructor(private val remoteDataStore
     private fun CryptoCurrencyExchangeRate?.failureWithNullOrData(failure: Failure): ResultState<List<ExchangeRateModel>> {
         return if (this == null) ResultState.Error(failure, emptyList())
         else ResultState.Error(failure, this.toUIModel())
-    }
-
-    private fun ExchangeRatesApiResponse.toLocalModel(params: GetExchangeRatesUseCase.GetExchangeRatesParams): CryptoCurrencyExchangeRate {
-        return CryptoCurrencyExchangeRate(
-            params.cryptoCurrencyName,
-            params.cryptoCurrencyCode,
-            this.data ?: emptyList()
-        )
     }
 }

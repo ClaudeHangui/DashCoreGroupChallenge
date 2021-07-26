@@ -7,6 +7,7 @@ import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRateD
 import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRateLocalDataStore
 import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRateLocalDataStoreImpl
 import com.changui.dashcoregroupchallenge.data.local.DCGDatabase
+import com.changui.dashcoregroupchallenge.data.mapper.RemoteToLocalMapper
 import com.changui.dashcoregroupchallenge.data.remote.BitPayApiService
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStore
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStoreImpl
@@ -101,6 +102,9 @@ object NonStaticProvision {
 
     @Provides
     fun provideErrorFactory(): ExchangeRatesFailureFactory = ExchangeRatesFailureFactory()
+
+    @Provides
+    fun provideMapper(): RemoteToLocalMapper = RemoteToLocalMapper()
 }
 
 @InstallIn(SingletonComponent::class)
