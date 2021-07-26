@@ -8,9 +8,9 @@ import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
 import com.changui.dashcoregroupchallenge.domain.ResultState
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
+import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchers
 import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val resourcesHelper: ResourcesHelper,
+    private val dispatchers: CoroutineDispatchers,
     private val useCase: GetExchangeRatesUseCase
 ) : ViewModel() {
 
@@ -60,9 +61,9 @@ class MainViewModel @Inject constructor(
         currentCryptoCurrencyName = cryptoCurrencyName
         loadingMutableLiveData.value = true
         val params = GetExchangeRatesUseCase.GetExchangeRatesParams(cryptoCurrencyCode, cryptoCurrencyName)
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(dispatchers.main) {
             when(
-                val result = withContext(Dispatchers.IO) { useCase.execute(params) }
+                val result = withContext(dispatchers.io) { useCase.execute(params) }
             ) {
                 is ResultState.Error -> {
                     val failureDescription = when (result.failure) {
