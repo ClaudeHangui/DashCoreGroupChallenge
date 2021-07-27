@@ -1,12 +1,16 @@
 package com.changui.dashcoregroupchallenge
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
+/**
+ * This class is a unit test rule which watches for tests starting and finishing.
+ * To test regular suspend functions or coroutines started with launch or async we use the runBlockingTest coroutine builder
+ * that provides extra test control to coroutines.
+ */
 @ExperimentalCoroutinesApi
 class TestCoroutineRule: TestRule {
 
@@ -16,9 +20,7 @@ class TestCoroutineRule: TestRule {
     override fun apply(base: Statement, description: Description?) = object : Statement() {
         @Throws(Throwable::class)
         override fun evaluate() {
-            Dispatchers.setMain(testCoroutineDispatcher)
             base.evaluate()
-            Dispatchers.resetMain()
             testCoroutineScope.cleanupTestCoroutines()
         }
     }

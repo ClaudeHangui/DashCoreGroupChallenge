@@ -8,9 +8,9 @@ import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
 import com.changui.dashcoregroupchallenge.domain.ResultState
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchers
 import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,7 +28,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val resourcesHelper: ResourcesHelper,
-    private val dispatchers: CoroutineDispatchers,
     private val useCase: GetExchangeRatesUseCase
 ) : ViewModel() {
 
@@ -36,20 +35,24 @@ class MainViewModel @Inject constructor(
     var currentCryptoCurrencyName: String = ""
     var actionState: CryptoCurrencyExchangeRateActionState? = null
 
-    private val actionLiveData: MutableLiveData<CryptoCurrencyExchangeRateActionState> = MutableLiveData()
+    private val actionMutableLiveData: MutableLiveData<CryptoCurrencyExchangeRateActionState> = MutableLiveData()
     fun setAction(action: CryptoCurrencyExchangeRateActionState) {
-        actionLiveData.value = action
+        actionMutableLiveData.value = action
     }
-    fun observeActionState(): LiveData<CryptoCurrencyExchangeRateActionState> = actionLiveData
+    val actionLiveData: LiveData<CryptoCurrencyExchangeRateActionState>
+        get() = actionMutableLiveData
 
     private val loadingMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    fun loadingLiveData(): LiveData<Boolean> = loadingMutableLiveData
+    val loadingLiveData: LiveData<Boolean>
+        get() = loadingMutableLiveData
 
     private val exchangeRatesMutableLiveData: MutableLiveData<List<ExchangeRateModel>> = MutableLiveData<List<ExchangeRateModel>>()
-    fun exchangeRatesSuccessLiveData(): LiveData<List<ExchangeRateModel>> = exchangeRatesMutableLiveData
+    val exchangeRatesSuccessLiveData : LiveData<List<ExchangeRateModel>>
+        get() = exchangeRatesMutableLiveData
 
     private val errorMutableLiveData: MutableLiveData<FailureUIState> = MutableLiveData<FailureUIState>()
-    fun exchangeRatesFailureLiveData(): LiveData<FailureUIState> = errorMutableLiveData
+    val exchangeRatesFailureLiveData: LiveData<FailureUIState>
+        get() = errorMutableLiveData
 
     /**
      * We needed as much as possible to offload the work of the views so when we receive a failure result,
@@ -61,9 +64,9 @@ class MainViewModel @Inject constructor(
         currentCryptoCurrencyName = cryptoCurrencyName
         loadingMutableLiveData.value = true
         val params = GetExchangeRatesUseCase.GetExchangeRatesParams(cryptoCurrencyCode, cryptoCurrencyName)
-        viewModelScope.launch(dispatchers.main) {
+        viewModelScope.launch(Dispatchers.Main) {
             when(
-                val result = withContext(dispatchers.io) { useCase.execute(params) }
+                val result = withContext(Dispatchers.IO) { useCase.execute(params) }
             ) {
                 is ResultState.Error -> {
                     val failureDescription = when (result.failure) {
@@ -83,8 +86,7 @@ class MainViewModel @Inject constructor(
                     loadingMutableLiveData.value = false
                 }
                 is ResultState.Success -> {
-                    val dataResult = result.data
-                    exchangeRatesMutableLiveData.value = dataResult
+                    exchangeRatesMutableLiveData.value = result.data
                     loadingMutableLiveData.value = false
                 }
             }

@@ -9,14 +9,12 @@ import com.changui.dashcoregroupchallenge.data.local.CryptoCurrencyExchangeRateL
 import com.changui.dashcoregroupchallenge.data.local.DCGDatabase
 import com.changui.dashcoregroupchallenge.data.mapper.RemoteToLocalMapper
 import com.changui.dashcoregroupchallenge.data.remote.BitPayApiService
+import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesFailureFactory
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStore
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStoreImpl
 import com.changui.dashcoregroupchallenge.domain.ExchangeRateRepository
-import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesFailureFactory
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCase
 import com.changui.dashcoregroupchallenge.domain.GetExchangeRatesUseCaseImpl
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchers
-import com.changui.dashcoregroupchallenge.domain.scope.CoroutineDispatchersImpl
 import com.changui.dashcoregroupchallenge.presentation.CryptoCurrenciesGenerator
 import com.changui.dashcoregroupchallenge.view.ResourcesHelper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -107,11 +105,6 @@ object NonStaticProvision {
 
     @Provides
     fun provideMapper(): RemoteToLocalMapper = RemoteToLocalMapper()
-
-    @Provides
-    fun provideCoroutineDispatcher(): CoroutineDispatchers {
-        return CoroutineDispatchersImpl()
-    }
 }
 
 @InstallIn(SingletonComponent::class)

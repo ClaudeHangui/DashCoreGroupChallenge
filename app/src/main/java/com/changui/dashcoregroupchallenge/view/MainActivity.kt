@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                     .commitNow()
         }
 
-        viewModel.observeActionState().observe(this, { state ->
+        viewModel.actionLiveData.observe(this, { state ->
             actionObserver(state)
         })
     }

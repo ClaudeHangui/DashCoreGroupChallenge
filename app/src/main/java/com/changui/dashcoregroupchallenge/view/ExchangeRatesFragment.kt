@@ -30,9 +30,9 @@ class ExchangeRatesFragment : Fragment(R.layout.exchange_rates_fragment) {
         binding?.exchangeRatesRv?.setHasFixedSize(true)
         binding?.exchangeRatesRv?.adapter = adapter
 
-        viewModel.loadingLiveData().observe(viewLifecycleOwner, { showLoading: Boolean -> renderLoadingState(showLoading) } )
-        viewModel.exchangeRatesSuccessLiveData().observe(viewLifecycleOwner, { items: List<ExchangeRateModel> -> renderListState(items) })
-        viewModel.exchangeRatesFailureLiveData().observe(viewLifecycleOwner, { errorUIModel: MainViewModel.FailureUIState -> renderErrorState(errorUIModel)} )
+        viewModel.loadingLiveData.observe(viewLifecycleOwner, { showLoading: Boolean -> renderLoadingState(showLoading) } )
+        viewModel.exchangeRatesSuccessLiveData.observe(viewLifecycleOwner, { items: List<ExchangeRateModel> -> renderListState(items) })
+        viewModel.exchangeRatesFailureLiveData.observe(viewLifecycleOwner, { errorUIModel: MainViewModel.FailureUIState -> renderErrorState(errorUIModel)} )
     }
 
     private fun renderErrorState(failure: MainViewModel.FailureUIState) {
