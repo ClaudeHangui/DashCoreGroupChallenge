@@ -1,38 +1,37 @@
 package com.changui.dashcoregroupchallenge
 
 import com.changui.dashcoregroupchallenge.data.remote.BitPayApiService
-import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStoreImpl
-import com.changui.dashcoregroupchallenge.domain.error.Failure
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesApiResponse
 import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesFailureFactory
+import com.changui.dashcoregroupchallenge.data.remote.ExchangeRatesRemoteDataStoreImpl
 import com.changui.dashcoregroupchallenge.domain.ResultState
 import com.changui.dashcoregroupchallenge.domain.entity.ExchangeRateModel
+import com.changui.dashcoregroupchallenge.domain.error.Failure
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldBeInstanceOf
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Before
+import org.junit.Test
 
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class ExchangeRatesRemoteDataStoreImplTest {
+
+class ExchangeRatesRemoteDataStoreImplTest {
 
     @MockK lateinit var apiService: BitPayApiService
     @MockK lateinit var failureFactory: ExchangeRatesFailureFactory
     private lateinit var exchangeRatesRemoteDataStoreImpl: ExchangeRatesRemoteDataStoreImpl
     private val cryptoCurrency = "BTC"
 
-    @BeforeEach
+    @Before
     fun setUp() {
         MockKAnnotations.init(this)
         exchangeRatesRemoteDataStoreImpl = ExchangeRatesRemoteDataStoreImpl(apiService, failureFactory)
     }
 
-    /*
+
     @Test
     fun `fetching exchange rates from server returns a Result containing the api response`() {
         val exchangeRates = listOf(
@@ -46,12 +45,14 @@ internal class ExchangeRatesRemoteDataStoreImplTest {
         coVerify { apiService.getCryptoCurrencyExchangeRate("BTC") }
         actualSuccessResponse shouldBeInstanceOf ResultState.Success(ExchangeRatesApiResponse::class)::class
     }
-    */
 
-    @org.junit.Test(expected = Exception::class)
+
+
+    @Test(expected = Exception::class)
     fun `fetching exchange rates from server fails with an exception`() {
         coEvery { apiService.getCryptoCurrencyExchangeRate(cryptoCurrency) } throws Exception()
         val actualFailureResponse = runBlocking { exchangeRatesRemoteDataStoreImpl.fetchExchangeRates(cryptoCurrency) }
         actualFailureResponse.shouldBeInstanceOf<ResultState.Error<Failure>>()
     }
+
 }
